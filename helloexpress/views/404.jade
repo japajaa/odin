@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  h1= message
+  h2= error.status
+  p= 'this is a custom 404 page'
+  pre #{error.stack}
