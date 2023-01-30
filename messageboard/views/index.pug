@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  br
+  ul
+  each val in messages
+      p= 'message: ' + val.text 
+      p= 'author: ' + val.user
+      p= 'date: ' + val.added
+      br
+  a(href='/new') Send a new message

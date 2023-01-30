@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= 'new message form'
+  p Here you can add a new message.
+  form(action="/new", method="post") 
+    p
+        | name  
+        input#user(type="text", name="user")
+    p
+        | message   
+        input#message(type="text", name="message")
+    input(type="submit", value="add message")
