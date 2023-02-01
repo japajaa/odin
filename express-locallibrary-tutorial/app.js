@@ -1,3 +1,4 @@
+require('dotenv').config()
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -13,7 +14,7 @@ var app = express();
 // Set up mongoose connection
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', false);
-const mongoDB = "mongodb://localhost:27017/local_library";
+const mongoDB = process.env.MONGOURL || "mongodb://yourDbUrlShouldBeInDotenv";
 
 main().catch(err => console.log(err));
 async function main() {
