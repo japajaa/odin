@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h4=title
+
+  form(method='POST' action='/login')
+    div.form-group
+      label(for='username') Username:
+      input#username.form-control(type='text' placeholder='user@email.com' name='username' required='true' value=(undefined===user ? '' : user.username))
+      label(for='password') Password:
+      input#password.form-control(type='password' placeholder='secret password' name='password' required='true' value='')
+    button.btn.btn-primary(type='submit') Login
+  if errors
+    ul
+      for error in errors
+        li!= error.msg
+  a(href="/sign-up") Sign up,
+  | if you don't have an account yet!

@@ -1,0 +1,21 @@
+extends layout
+
+block content
+
+  if currentUser
+    a(href='/createmessage') Create a new message
+
+  ul
+    each message in message_list
+      li
+        h4= message.title
+        p= message.text
+        if currentUser && currentUser.membershipStatus == 'Member'
+          p by #{message.user.fullname} (#{message.date_formatted})
+        else if currentUser && currentUser.membershipStatus == 'Admin'
+          p by #{message.user.fullname} (#{message.date_formatted})
+            form(method='POST' action=`/deletemessage/${message._id}`)
+              button.btn.btn-primary(type='submit') Delete
+
+    else
+      li No messages at all!

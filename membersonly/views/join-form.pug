@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1=title
+
+  h4=comment
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='passcode') Passcode:
+      input#passcode.form-control(type='password' placeholder='Sikret passcode' name='passcode' required='true' value='')
+    button.btn.btn-primary(type='submit') Submit
+    a(href="/") Back to main page
+  if errors
+    ul
+      for error in errors
+        li!= error.msg
