@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='name') Nimi:
+      input#name.form-control(type='text', placeholder='Ruokalajin nimi' name='name' required='true' value=(undefined===dish ? '' : dish.name) )
+    div.form-group
+      label(for='servings') Ruokailukerrat:
+      input#servings.form-control(type="number", name="servings" required="true" value=(undefined===dish ? '' : dish.servings))
+    div.form-group
+      label Kategoria:
+      div
+        for category in categories
+          div(style='display: inline; padding-right:10px;')
+            input.checkbox-input(type='checkbox', name='category', id=category._id, value=category._id, checked=category.checked )
+            label(for=category._id) #{category.name}(#{category.type})
+    button.btn.btn-primary(type='submit') Lisää ruokalaji
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

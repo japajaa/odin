@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 Name: #{dish.name}
+
+  p Haluatko todella poistaa tämän ruokalajin?
+
+    form(method='POST' action='')
+      div.form-group
+        input#dishid.form-control(type='hidden',name='dishid', required='true', value=dish._id )
+
+      button.btn.btn-primary(type='submit') Poista ruokalaji

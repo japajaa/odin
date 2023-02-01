@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h1 Kategoria: #{category.name} (#{category.type})
+
+  if category_dishes.length
+
+    p #[strong Poista tämä kategoria seuraavilta ruokalajeilta, ennen kuin voit poistaa tämän kategorian.]
+
+    div(style='margin-left:20px;margin-top:20px')
+
+      h4 Ruokalajit
+
+    dl
+      each dish in category_dishes
+        dt
+          a(href=dish.url) #{dish.name}
+        dd Servings: #{dish.servings}
+
+  else
+    p Haluatko todella poistaa tämän kategorian?
+
+    form(method='POST' action='')
+      div.form-group
+        input#categoryid.form-control(type='hidden',name='categoryid', required='true', value=category._id )
+
+      button.btn.btn-primary(type='submit') Poista kategoria

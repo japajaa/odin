@@ -1,0 +1,24 @@
+extends layout
+
+block content
+
+  h1 Kategoria: #{category.name}
+
+  div(style='margin-left:20px;margin-top:20px')
+
+    h4 Ruokalajit
+
+    dl
+      each dish in category_dishes
+        dt
+          a(href=dish.url) #{dish.name}
+        dd Ruokailukerrat: #{dish.servings}
+
+      else
+        p Tässä kategoriassa ei ole ruokalajeja.
+
+  hr
+  p
+    a(href=category.url+'/delete') Poista kategoria
+  p
+    a(href=category.url+'/update') Muokkaa kategoriaa

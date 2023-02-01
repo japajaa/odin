@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1 #{title}
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='name') Kategorian nimi:
+      input#name.form-control(type='text', placeholder='Liha, kala, jne.' name='name' value=(undefined===category ? '' : category.name))
+      label(for='type') Kategorian tyyppi:
+      input#name.form-control(type='text', placeholder='Ruokavalio, maa, jne.' name='type' value=(undefined===category ? '' : category.type))
+    button.btn.btn-primary(type='submit') Lisää kategoria
+
+  if errors
+   ul
+    for error in errors
+     li!= error.msg

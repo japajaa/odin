@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+  p Tervetuloa #[em Ruokalistageneraattoriin], Suomen parhaaseen työkaluun viikon ruokalistojen muodostamiseksi!
+
+  h1 Dynaaminen sisältö:
+
+  if error
+    p Virhe haettaessa dynaamista sisältöä.
+  else
+    p Ruokalistageneraattorissa on sisältöä:
+
+    ul
+      li #[strong Ruokalajit:] !{data.dish_count}
+      li #[strong Kategoriat:] !{data.category_count}

@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1 Nimi: #{dish.name}
+
+  p #[strong Ruokailukerrat:] #{dish.servings}
+  p #[strong Kategoriat:]
+    each val, index in dish.category
+      a(href=val.url) #{val.name}
+      if index < dish.category.length - 1
+        |,
+
+  div(style='margin-left:20px;margin-top:20px')
+    p
+      a(href=dish.url+'/delete') Poista ruokalaji
+    p
+      a(href=dish.url+'/update') Muokkaa ruokalajia
