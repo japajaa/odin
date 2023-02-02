@@ -1,79 +1,35 @@
-const Post = require("../models/post");
-const User = require("../models/user");
+const Comment = require("../models/comment");
 // const async = require("async");
 const { body, validationResult } = require("express-validator");
 
-
-// Display list of all Posts.
-exports.post_list = function (req, res, next) {
-  Post.find({})
-    .sort({ name: 1 })
-    .populate("user")
-    .exec(function (err, list_messages) {
+// Display all comments of a specific post.
+exports.list_comments = (req, res, next) => {
+  Comment.find({post: req.params.postid})
+    .sort({ date: 1 })
+    .exec(function (err, list_comments) {
       if (err) {
         return next(err);
       }
       //Successful, so send list as json
-      res.json({messages: list_messages });
+      res.json({comments: list_comments });
+    });
+};
+
+// Display a specific comment of a specific post.
+exports.single_comment = (req, res, next) => {
+  Comment.findOne({post: req.params.postid, _id: req.params.commentid})
+    .exec(function (err, single_comment) {
+      if (err) {
+        return next(err);
+      }
+      //Successful, so send data as json
+      res.json({comment: single_comment });
     });
 };
 
 
-// Display detail page for a specific post.
-exports.post_detail = (req, res, next) => {
-  Post.findById(req.params.id)
-    .sort({ name: 1 })
-    .populate("user")
-    .exec(function (err, list_messages) {
-      if (err) {
-        return next(err);
-      }
-      //Successful, so send list as json
-      res.json({messages: list_messages });
-    });
-};
-
-/*
-// Display detail page for a specific book.
-exports.book_detail = (req, res, next) => {
-  async.parallel(
-    {
-      book(callback) {
-        Book.findById(req.params.id)
-          .populate("author")
-          .populate("genre")
-          .exec(callback);
-      },
-      book_instance(callback) {
-        BookInstance.find({ book: req.params.id }).exec(callback);
-      },
-    },
-    (err, results) => {
-      if (err) {
-        return next(err);
-      }
-      if (results.book == null) {
-        // No results.
-        const err = new Error("Book not found");
-        err.status = 404;
-        return next(err);
-      }
-      // Successful, so render.
-      res.render("book_detail", {
-        title: results.book.title,
-        book: results.book,
-        book_instances: results.book_instance,
-      });
-    }
-  );
-};
-*/
-
-
-
-
-// Handle Message create on POST.
-exports.post_create = 
+// Handle Comment create on POST.
+exports.comment_create = 
 // [
   // Validate and sanitize the name field.
   // body("title", "Title for message is required").trim().isLength({ min: 1 }).escape(),
@@ -83,8 +39,7 @@ exports.post_create =
     // Extract the validation errors from a request.
     // const errors = validationResult(req);
     // Create a genre object with escaped and trimmed data.
-    console.log('user is', req.user)
-    const post = new Post({ title: req.body.title, text: req.body.text, user: req.user._id.toString(), date: Date.now() });
+    const comment = new Comment({ text: req.body.text, user: req.body.username, date: Date.now(), post: req.params.postid });
 /*
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
@@ -97,12 +52,12 @@ exports.post_create =
     } else {
       */
       // Data from form is valid.
-          post.save((err) => {
+          comment.save((err) => {
             if (err) {
               return next(err);
             }
-            // Message saved. Redirect to main page.
-            res.json({post});
+            // Comment saved. Redirect to main page.
+            res.json({comment});
           });
         }
   // },

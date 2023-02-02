@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const CommentSchema = new Schema({
   text: { type: String, required: true, maxLength: 1000, minLength: 1 },
   date: { type: Date, required: true, default: Date.now },
-  user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  user: { type: String, required: true, maxLength: 50, minLength: 1 },
   post: { type: Schema.Types.ObjectId, ref: "Post", required: true }
 });
 
