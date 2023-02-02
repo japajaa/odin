@@ -1,41 +1,53 @@
-const Message = require("../models/message");
+const Post = require("../models/post");
 const User = require("../models/user");
-const async = require("async");
+// const async = require("async");
 const { body, validationResult } = require("express-validator");
 
 
-// Display list of all Messages.
-exports.message_list = function (req, res, next) {
-  Message.find({})
+// Display list of all Posts.
+exports.post_list = function (req, res, next) {
+  Post.find({})
     .sort({ name: 1 })
     .populate("user")
     .exec(function (err, list_messages) {
       if (err) {
         return next(err);
       }
-      //Successful, so render
-      res.render("message_list", { title: "Club house", message_list: list_messages });
+      //Successful, so send list as json
+      res.json({messages: list_messages });
     });
 };
 
-// Display Message create form on GET.
-exports.message_create_get = (req, res, next) => {
-  res.render("message_form", { title: "Create Message" });
+
+// Display detail page for a specific post.
+exports.post_detail = (req, res, next) => {
+  Post.findById(req.params.id)
+    .sort({ name: 1 })
+    .populate("user")
+    .exec(function (err, list_messages) {
+      if (err) {
+        return next(err);
+      }
+      //Successful, so send list as json
+      res.json({messages: list_messages });
+    });
 };
 
+
 // Handle Message create on POST.
-exports.message_create_post = [
+exports.post_create = 
+// [
   // Validate and sanitize the name field.
-  body("title", "Title for message is required").trim().isLength({ min: 1 }).escape(),
-  body("text").trim().isLength({ min: 1, max: 160 }).escape().withMessage('Message length must be 1-160 characters'),
+  // body("title", "Title for message is required").trim().isLength({ min: 1 }).escape(),
+  // body("text").trim().isLength({ min: 1, max: 160 }).escape().withMessage('Message length must be 1-160 characters'),
   // Process request after validation and sanitization.
   (req, res, next) => {
     // Extract the validation errors from a request.
-    const errors = validationResult(req);
-
+    // const errors = validationResult(req);
     // Create a genre object with escaped and trimmed data.
-    const message = new Message({ title: req.body.title, text: req.body.text, user: res.locals.currentUser._id, date: Date.now() });
-
+    console.log('user is', req.user)
+    const post = new Post({ title: req.body.title, text: req.body.text, user: req.user._id.toString(), date: Date.now() });
+/*
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
       res.render("message_form", {
@@ -45,17 +57,18 @@ exports.message_create_post = [
       });
       return;
     } else {
+      */
       // Data from form is valid.
-          message.save((err) => {
+          post.save((err) => {
             if (err) {
               return next(err);
             }
             // Message saved. Redirect to main page.
-            res.redirect('/');
+            res.json({post});
           });
         }
-  },
-];
+  // },
+// ];
 /*
 // Display Message delete form on GET.
 exports.message_delete_get = (req, res) => {
@@ -86,6 +99,7 @@ exports.message_delete_get = (req, res) => {
 };
 */
 // Handle Message delete on POST.
+/*
 exports.message_delete_post = (req, res) => {
   async.parallel(
     {
